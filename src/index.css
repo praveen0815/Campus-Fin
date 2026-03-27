@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.2), transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(30, 64, 175, 0.17), transparent 44%),
+    linear-gradient(145deg, #f8fafc, #e2e8f0 55%, #cbd5e1);
+  color: #0f172a;
+  font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
