@@ -163,36 +163,6 @@ slot-sphere/
 
 ---
 
-# 📸 Screenshots Setup (IMPORTANT)
-
-👉 Create this folder:
-
-```id="5xq4mj"
-docs/screenshots/
-```
-
-👉 Add your images:
-
-* student-dashboard.png
-* my-bookings.png
-* admin-dashboard.png
-* analytics.png
-* notifications.png
-* architecture.png
-
----
-
-# 🛠️ Setup Instructions
-
-```bash id="8z3kq2"
-git clone <your-repo-link>
-cd slot-sphere
-npm install
-npm run dev
-```
-
----
-
 # 👨‍💻 Developer
 
 **PRAVEENKUMAR R**
