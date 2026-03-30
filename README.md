@@ -1,7 +1,5 @@
 # 🏟️ Campus Sports Booking System
 
-### Campus Sports Booking System
-
 SlotSphere is a full-stack campus sports booking platform that enables students to reserve sports facilities in real-time while providing administrators complete control over sports, venues, slots, and bookings.
 
 The system ensures efficient resource management, prevents scheduling conflicts, and delivers a seamless user experience through a modern UI and real-time updates.
