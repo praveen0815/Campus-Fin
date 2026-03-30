@@ -70,32 +70,63 @@ It empowers both **students** and **administrators** through a seamless, respons
 
 <img width="984" height="594" alt="Screenshot 2026-03-30 201418" src="https://github.com/user-attachments/assets/28a2ea72-7e4e-4323-8a4e-0e0f1cc77ac2" />
 
+* Represents overall system design (Three-Tier Architecture)
+* Separates frontend, backend, and database layers
+* Ensures scalability and modular development
+* Improves maintainability and performance
+* Enables independent development of each layer
+
 SlotSphere follows a **Three-Tier Architecture**:
 
 ## 🖥️ Presentation Layer
 <img width="1098" height="412" alt="image" src="https://github.com/user-attachments/assets/6d21b826-48eb-4d80-9126-4c959164fb93" />
 
+* Handles all user interactions and UI rendering
+* Built using React, TypeScript, and Tailwind CSS
+* Displays dashboards, booking pages, and analytics
+* Provides responsive and user-friendly interface
+* Communicates with backend via APIs
 
 ## ⚙️ Application Layer
 <img width="866" height="439" alt="image" src="https://github.com/user-attachments/assets/c64a7d46-2102-4452-9bab-a5df57ec5f0b" />
 
+* Manages business logic and system operations
+* Handles authentication and role validation
+* Processes booking requests and validations
+* Provides APIs for frontend communication
+* Ensures secure data flow using JWT
 
 ## 🗄️ Data Layer
 <img width="865" height="373" alt="image" src="https://github.com/user-attachments/assets/1a8c8c42-2452-4d41-a1af-815f857556fd" />
 
-
+* Manages business logic and system operations
+* Handles authentication and role validation
+* Processes booking requests and validations
+* Provides APIs for frontend communication
+* Ensures secure data flow using JWT
 ---
 
 ## 🔄 System Flow
 
 <img width="1115" height="546" alt="image" src="https://github.com/user-attachments/assets/1a9622f9-4b84-4dfe-b53a-8f309e05b476" />
 
+* Illustrates internal system components
+* Shows interaction between modules (Auth, Booking, Notifications)
+* Highlights modular structure of application
+* Demonstrates separation of concerns
+* Improves system scalability and maintainability
 
 ---
 
 # 🧠 Technical Architecture (Deep Dive)
 
 <img width="864" height="381" alt="image" src="https://github.com/user-attachments/assets/57fb2983-e203-465a-a550-f201396c5e4c" />
+
+* Illustrates internal system components
+* Shows interaction between modules (Auth, Booking, Notifications)
+* Highlights modular structure of application
+* Demonstrates separation of concerns
+* Improves system scalability and maintainability
 
 ---
 
@@ -122,12 +153,22 @@ SlotSphere follows a **Three-Tier Architecture**:
 
 <img width="1074" height="524" alt="image" src="https://github.com/user-attachments/assets/b4ff0136-d6c8-4faf-b2dc-7ba1cd6d609e" />
 
-
+* Illustrates internal system components
+* Shows interaction between modules (Auth, Booking, Notifications)
+* Highlights modular structure of application
+* Demonstrates separation of concerns
+* Improves system scalability and maintainability
+  
 ---
 
 ## Relationships
 <img width="982" height="503" alt="image" src="https://github.com/user-attachments/assets/c2f702b6-bb22-4b01-b76e-e2158b3bd484" />
 
+* Displays database tables and structure
+* Shows columns like id, role, slot, status
+* Represents how data is stored in PostgreSQL
+* Helps in understanding system data model
+* Ensures normalized database design
 
 ---
 
@@ -146,7 +187,6 @@ SlotSphere follows a **Three-Tier Architecture**:
 ## 👨‍🎓 Student Dashboard
 
 <img width="1904" height="946" alt="Student Dashboard" src="https://github.com/user-attachments/assets/081f2027-196c-4b47-a037-78b659082aca" />
-
 
 **Features:**
 
@@ -294,17 +334,19 @@ slot-sphere/
 
 <img width="1077" height="739" alt="Screenshot 2026-03-30 220358" src="https://github.com/user-attachments/assets/f5544294-6867-4fba-ba70-8ef699a1d3cb" />
 
-
 ---
 
 # 🧪 Testing & Validation
 
 <img width="1105" height="678" alt="image" src="https://github.com/user-attachments/assets/5e693e0d-8c62-4e35-bb32-34bf369b2520" />
 
-* Input validation
-* Slot conflict prevention
-* Role-based access testing
-* UI responsiveness checks
+**Explanation:**
+
+* Represents testing strategies used in the system
+* Includes input validation and error handling
+* Ensures booking conflict prevention
+* Verifies role-based access control
+* Improves system reliability and performance
 
 ---
 
