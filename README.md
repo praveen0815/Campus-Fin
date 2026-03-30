@@ -22,7 +22,7 @@ It empowers both **students** and **administrators** through a seamless, respons
 ## 👨‍🎓 Student Experience
 
 * Browse sports and venues
-* 📅 Book slots using Book Slot page
+* Book slots using Book Slot page
 * Select date, venue, and time
 * View “My Bookings” with full details
 * Cancel bookings instantly
