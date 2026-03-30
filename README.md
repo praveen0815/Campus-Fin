@@ -146,21 +146,6 @@ The system follows a **Three-Tier Architecture**:
 
 ---
 
-# 📁 Project Structure
-
-```id="xg3j8g"
-slot-sphere/
-├─ src/
-├─ components/
-├─ pages/
-├─ services/
-├─ supabase/
-├─ docs/
-│   └─ screenshots/
-```
-
----
-
 # 👨‍💻 Developer
 
 **PRAVEENKUMAR R**
