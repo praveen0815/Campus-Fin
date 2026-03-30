@@ -20,8 +20,9 @@ export function StatusBadge({ status, className = '' }: StatusBadgeProps) {
   const style = statusStyles[normalized] ?? 'bg-slate-200 text-slate-700'
 
   return (
-    <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${style} ${className}`}>
+    <span className={`inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold transition-colors duration-200 ${style} ${className}`}>
       {label}
     </span>
   )
 }
+

@@ -5,7 +5,6 @@ import { fetchDashboardData, formatSlotTime, toUserError } from '../../services/
 import type { StudentDashboardData } from '../../types/student'
 import { supabase } from '../../services/supabase'
 import { Card } from '../../components/ui/Card'
-import { EmptyState } from '../../components/ui/EmptyState'
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 
@@ -59,20 +58,25 @@ export default function StudentDashboardPage() {
   }
 
   return (
-    <section className="space-y-6">
-      <Card className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-        <p className="text-xs font-semibold uppercase tracking-wide text-blue-100">Student Portal</p>
-        <h1 className="mt-2 text-3xl font-bold">Welcome back, {profile?.email?.split('@')[0] ?? 'Student'}</h1>
-        <p className="mt-1 text-sm text-blue-100">Book your favorite sports slots and track activity instantly.</p>
+    <section className="space-y-8">
+      <header>
+        <h1 className="text-3xl font-bold text-slate-900">Welcome back, {profile?.email?.split('@')[0] ?? 'Student'}</h1>
+        <p className="mt-1 text-base leading-relaxed text-slate-500">Book your favorite sports slots and track activity instantly.</p>
+      </header>
+
+      <Card className="bg-gradient-to-r from-blue-600 to-blue-700 p-8 text-white">
+        <p className="text-sm font-semibold uppercase tracking-wide text-blue-100">Student Portal</p>
+        <h2 className="mt-2 text-2xl font-semibold">Manage bookings and stay on top of available slots.</h2>
+        <p className="mt-2 text-base leading-relaxed text-blue-100">Use quick actions below to book, review, and manage your schedule.</p>
       </Card>
 
-      {error ? <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div> : null}
+      {error ? <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-red-500">{error}</div> : null}
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
         <Card hoverable>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-slate-600">Available Sports</p>
+              <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">Available Sports</p>
               <p className="mt-2 text-3xl font-bold text-slate-900">{data?.totalSports ?? 0}</p>
             </div>
             <div className="rounded-xl bg-blue-50 p-3 text-blue-600">
@@ -84,7 +88,7 @@ export default function StudentDashboardPage() {
         <Card hoverable>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-slate-600">Available Slots Today</p>
+              <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">Available Slots Today</p>
               <p className="mt-2 text-3xl font-bold text-slate-900">{data?.availableSlotsToday ?? 0}</p>
             </div>
             <div className="rounded-xl bg-emerald-50 p-3 text-emerald-600">
@@ -96,7 +100,7 @@ export default function StudentDashboardPage() {
         <Card hoverable>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-slate-600">My Bookings</p>
+              <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">My Bookings</p>
               <p className="mt-2 text-3xl font-bold text-slate-900">{data?.recentBookings.length ?? 0}</p>
             </div>
             <div className="rounded-xl bg-slate-100 p-3 text-slate-700">
@@ -109,26 +113,22 @@ export default function StudentDashboardPage() {
       <Card>
         <div className="mb-4 flex items-center gap-2">
           <UserCircle2 className="h-5 w-5 text-blue-600" />
-          <h2 className="text-lg font-bold text-slate-900">Recent Bookings</h2>
+          <h2 className="text-xl font-semibold text-slate-900">Recent Bookings</h2>
         </div>
 
         {(data?.recentBookings.length ?? 0) === 0 ? (
-          <EmptyState
-            icon={<BookCopy className="h-5 w-5" />}
-            title="No bookings yet"
-            description="Book a slot to see your activity here."
-          />
+          <div className="rounded-xl bg-slate-50 p-6 text-base text-slate-500">No bookings yet. Book a slot to see your activity here.</div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {data?.recentBookings.map((booking) => (
-              <article key={booking.id} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+              <article key={booking.id} className="rounded-xl border border-slate-200 bg-slate-50 px-5 py-4 transition-colors duration-300">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <p className="font-semibold text-slate-900">
+                    <p className="text-lg font-semibold text-slate-900">
                       {booking.slots?.venues?.sports?.name ?? 'Sport'} at {booking.slots?.venues?.name ?? 'Venue'}
                     </p>
-                    <p className="text-xs text-slate-600">
-                      {booking.slots?.slot_date ?? 'Date not set'} • {booking.slots ? formatSlotTime(booking.slots) : '--'}
+                    <p className="text-sm leading-relaxed text-slate-500">
+                      {booking.slots?.slot_date ?? 'Date not set'} â€¢ {booking.slots ? formatSlotTime(booking.slots) : '--'}
                     </p>
                   </div>
                   <StatusBadge status={booking.status} />
@@ -141,3 +141,4 @@ export default function StudentDashboardPage() {
     </section>
   )
 }
+

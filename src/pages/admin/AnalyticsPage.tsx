@@ -44,7 +44,7 @@ export default function AnalyticsPage() {
 
   if (error) {
     return (
-      <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">
+      <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-red-500">
         {error}
       </div>
     )
@@ -106,8 +106,8 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-semibold text-slate-900">Analytics</h2>
-        <p className="mt-1 text-sm text-slate-600">Insights and statistics about your sports booking system</p>
+        <h2 className="text-3xl font-semibold text-slate-900 lg:text-4xl">Analytics</h2>
+        <p className="mt-2 text-sm leading-relaxed text-slate-500 sm:text-base">Insights and statistics about your sports booking system</p>
       </div>
 
       {/* Key Metrics */}
@@ -132,7 +132,7 @@ export default function AnalyticsPage() {
 
       {/* Slot Status */}
       <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h3 className="mb-4 text-lg font-semibold text-slate-900">Slot Status Overview</h3>
+        <h3 className="mb-5 text-xl font-semibold text-slate-900">Slot Status Overview</h3>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="rounded-xl bg-emerald-50 p-4">
             <p className="text-sm font-medium text-emerald-700">Booked Slots</p>
@@ -152,15 +152,15 @@ export default function AnalyticsPage() {
       {/* Top Sports */}
       <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <div className="border-b border-slate-200 bg-slate-50 px-6 py-4">
-          <h3 className="text-sm font-semibold text-slate-900">Top Sports by Bookings</h3>
+          <h3 className="text-xl font-semibold text-slate-900">Top Sports by Bookings</h3>
         </div>
         <div className="divide-y divide-slate-200">
           {sportsBookingCount.length === 0 ? (
-            <div className="px-6 py-8 text-center text-sm text-slate-600">No booking data yet.</div>
+            <div className="px-6 py-8 text-center text-base text-slate-500">No booking data yet.</div>
           ) : (
             sportsBookingCount.map((sport) => (
               <div key={sport.id} className="flex items-center justify-between px-6 py-4 hover:bg-slate-50">
-                <span className="font-medium text-slate-900">{sport.name}</span>
+                <span className="text-base font-medium text-slate-900">{sport.name}</span>
                 <div className="flex items-center gap-2">
                   <div className="h-2 flex-1 min-w-96 rounded-full bg-slate-200">
                     <div
@@ -174,7 +174,7 @@ export default function AnalyticsPage() {
                       }}
                     ></div>
                   </div>
-                  <span className="text-sm font-semibold text-slate-900 w-12 text-right">{sport.count}</span>
+                  <span className="w-12 text-right text-base font-semibold text-slate-900">{sport.count}</span>
                 </div>
               </div>
             ))
@@ -185,17 +185,17 @@ export default function AnalyticsPage() {
       {/* Top Venues */}
       <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <div className="border-b border-slate-200 bg-slate-50 px-6 py-4">
-          <h3 className="text-sm font-semibold text-slate-900">Top Venues by Bookings</h3>
+          <h3 className="text-xl font-semibold text-slate-900">Top Venues by Bookings</h3>
         </div>
         <div className="divide-y divide-slate-200">
           {venueBookingCount.length === 0 ? (
-            <div className="px-6 py-8 text-center text-sm text-slate-600">No venue data yet.</div>
+            <div className="px-6 py-8 text-center text-base text-slate-500">No venue data yet.</div>
           ) : (
             venueBookingCount.map((venue) => (
               <div key={venue.id} className="flex items-center justify-between px-6 py-4 hover:bg-slate-50">
                 <div>
-                  <p className="font-medium text-slate-900">{venue.name}</p>
-                  <p className="text-xs text-slate-600">{venue.location}</p>
+                  <p className="text-base font-medium text-slate-900">{venue.name}</p>
+                  <p className="text-sm text-slate-500">{venue.location}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="h-2 flex-1 min-w-96 rounded-full bg-slate-200">
@@ -210,7 +210,7 @@ export default function AnalyticsPage() {
                       }}
                     ></div>
                   </div>
-                  <span className="text-sm font-semibold text-slate-900 w-12 text-right">{venue.count}</span>
+                  <span className="w-12 text-right text-base font-semibold text-slate-900">{venue.count}</span>
                 </div>
               </div>
             ))

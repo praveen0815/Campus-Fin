@@ -13,7 +13,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-slate-700">
+      <div className="flex min-h-screen items-center justify-center bg-slate-100 text-base font-medium text-slate-700 sm:text-lg transition-colors duration-300">
         Checking session...
       </div>
     )
@@ -30,3 +30,4 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
 
   return <>{children}</>
 }
+

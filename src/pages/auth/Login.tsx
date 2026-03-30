@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import type { UserRole } from '../../types/auth'
 
@@ -25,6 +26,7 @@ export default function Login() {
   const [activeTab, setActiveTab] = useState<LoginTab>('student')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -113,26 +115,22 @@ export default function Login() {
   }
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(14,165,233,0.26),transparent_36%),radial-gradient(circle_at_85%_80%,rgba(6,182,212,0.22),transparent_42%)]" />
-
-      <section className="relative z-10 w-full max-w-md rounded-3xl border border-white/60 bg-white/90 p-8 shadow-[0_24px_70px_-28px_rgba(15,23,42,0.55)] backdrop-blur">
-        <div className="flex items-center justify-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 via-sky-600 to-indigo-700 text-lg font-bold text-white shadow-lg shadow-cyan-600/30">
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-200 px-4 py-12 transition-colors duration-300">
+      <section className="w-full max-w-xl min-h-[680px] rounded-2xl border border-white/70 bg-white/90 p-10 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-[1.01] sm:p-12">
+        <div className="mb-6 space-y-1">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 via-sky-600 to-indigo-700 text-xl font-bold text-white shadow-lg shadow-cyan-600/30">
             S
+            </div>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900">SlotSphere</h1>
           </div>
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">SlotSphere</h1>
-            <p className="text-xs font-medium uppercase tracking-[0.22em] text-cyan-700">
-              Campus Sports Booking Portal
-            </p>
-          </div>
+          <p className="text-lg uppercase tracking-wide text-slate-500">Campus Sports Booking Portal</p>
         </div>
 
-        <div className="relative mt-7 rounded-2xl bg-slate-100 p-1">
+        <div className="relative mt-6 h-12 w-full rounded-xl bg-slate-100 p-1 transition-colors duration-300">
           <span
             aria-hidden="true"
-            className={`absolute top-1 h-[calc(100%-0.5rem)] w-[calc(50%-0.25rem)] rounded-xl bg-white shadow-sm transition-transform duration-300 ${
+            className={`absolute top-1 h-[calc(100%-0.5rem)] w-[calc(50%-0.25rem)] rounded-lg bg-white shadow-sm transition-all duration-200 ${
               activeTab === 'admin' ? 'translate-x-full' : 'translate-x-0'
             }`}
           />
@@ -140,7 +138,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => handleTabChange('student')}
-              className={`rounded-xl px-3 py-2 text-sm font-medium transition ${
+              className={`h-10 rounded-lg px-4 text-base font-medium transition-all duration-200 ${
                 activeTab === 'student' ? 'text-slate-900' : 'text-slate-500 hover:text-slate-700'
               }`}
             >
@@ -149,7 +147,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => handleTabChange('admin')}
-              className={`rounded-xl px-3 py-2 text-sm font-medium transition ${
+              className={`h-10 rounded-lg px-4 text-base font-medium transition-all duration-200 ${
                 activeTab === 'admin' ? 'text-slate-900' : 'text-slate-500 hover:text-slate-700'
               }`}
             >
@@ -158,52 +156,70 @@ export default function Login() {
           </div>
         </div>
 
-        <h2 className="mt-6 text-2xl font-semibold text-slate-900">{heading}</h2>
-        <p className="mt-1 text-sm text-slate-600">{subheading}</p>
+        <div className="mt-8 space-y-1">
+          <h2 className="text-2xl font-semibold text-slate-900">{heading}</h2>
+          <p className="text-base text-slate-500">{subheading}</p>
+        </div>
 
-        <form className="mt-6 space-y-4" onSubmit={handleSubmit} noValidate>
-          <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium text-slate-700">
+        <form className="mt-8 space-y-8" onSubmit={handleSubmit} noValidate>
+          <div className="space-y-5">
+            <div>
+            <label htmlFor="email" className="mb-2 block text-lg font-medium text-slate-700">
               Email
             </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
-              placeholder={activeTab === 'student' ? 'name@bitsathy.ac.in' : 'admin@example.com'}
-              autoComplete="email"
-              required
-            />
+              <div className="relative">
+                <Mail className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  className="w-full rounded-lg border border-slate-300 bg-white py-4 pl-11 pr-4 text-lg text-slate-900 outline-none transition-all duration-200 focus:ring-2 focus:ring-blue-500 placeholder-slate-500"
+                  placeholder={activeTab === 'student' ? 'name@bitsathy.ac.in' : 'admin@example.com'}
+                  autoComplete="email"
+                  required
+                />
+              </div>
             {activeTab === 'student' ? (
-              <p className="mt-1 text-xs text-slate-500">Student login accepts only @bitsathy.ac.in emails.</p>
+                <p className="mt-2 text-base leading-relaxed text-blue-500">Student login accepts only @bitsathy.ac.in emails.</p>
             ) : null}
           </div>
 
-          <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium text-slate-700">
+            <div>
+            <label htmlFor="password" className="mb-2 block text-lg font-medium text-slate-700">
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
-              placeholder="Enter your password"
-              autoComplete="current-password"
-              required
-            />
+              <div className="relative">
+                <Lock className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  className="w-full rounded-lg border border-slate-300 bg-white py-4 pl-11 pr-12 text-lg text-slate-900 outline-none transition-all duration-200 focus:ring-2 focus:ring-blue-500 placeholder-slate-500"
+                  placeholder="Enter your password"
+                  autoComplete="current-password"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-700"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
+            </div>
           </div>
 
           {error ? (
-            <p role="alert" className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">
+            <p role="alert" className="rounded-lg bg-rose-50 px-4 py-3 text-sm text-red-500">
               {error}
             </p>
           ) : null}
           {message ? (
-            <p role="status" className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+            <p role="status" className="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
               {message}
             </p>
           ) : null}
@@ -211,7 +227,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading || authLoading || !canSubmit}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-4 text-lg font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? (
               <>
@@ -224,9 +240,9 @@ export default function Login() {
           </button>
         </form>
 
-        <p className="mt-5 text-sm text-slate-600">
+        <p className="mt-8 text-base text-slate-500">
           New to SlotSphere?{' '}
-          <Link to="/signup" className="font-medium text-cyan-700 hover:text-cyan-800">
+          <Link to="/signup" className="text-base font-medium text-blue-600 hover:underline">
             Switch to Signup
           </Link>
         </p>
@@ -234,3 +250,4 @@ export default function Login() {
     </main>
   )
 }
+

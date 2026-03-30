@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS venues (
 CREATE TABLE IF NOT EXISTS slots (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   venue_id UUID NOT NULL REFERENCES venues(id) ON DELETE CASCADE,
+  date DATE,
+  slot_date DATE,
   session TEXT NOT NULL CHECK (session IN ('morning', 'evening')),
   start_time TIME NOT NULL,
   end_time TIME NOT NULL,
@@ -31,10 +33,63 @@ CREATE TABLE IF NOT EXISTS slots (
 -- Create bookings table
 CREATE TABLE IF NOT EXISTS bookings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID,
   slot_id UUID NOT NULL REFERENCES slots(id) ON DELETE CASCADE,
   student_email TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'cancelled')),
   created_at TIMESTAMP DEFAULT NOW()
+);
+
+ALTER TABLE slots ADD COLUMN IF NOT EXISTS date DATE;
+ALTER TABLE slots ADD COLUMN IF NOT EXISTS slot_date DATE;
+ALTER TABLE bookings ADD COLUMN IF NOT EXISTS user_id UUID;
+
+UPDATE slots
+SET
+  date = COALESCE(date, slot_date),
+  slot_date = COALESCE(slot_date, date)
+WHERE date IS NULL OR slot_date IS NULL;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conname = 'bookings_user_id_fkey'
+  ) THEN
+    ALTER TABLE bookings
+      ADD CONSTRAINT bookings_user_id_fkey
+      FOREIGN KEY (user_id)
+      REFERENCES auth.users(id)
+      ON DELETE SET NULL;
+  END IF;
+END $$;
+
+CREATE OR REPLACE FUNCTION sync_slots_date_columns()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  NEW.date := COALESCE(NEW.date, NEW.slot_date);
+  NEW.slot_date := COALESCE(NEW.slot_date, NEW.date);
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_sync_slots_date_columns ON slots;
+CREATE TRIGGER trg_sync_slots_date_columns
+BEFORE INSERT OR UPDATE ON slots
+FOR EACH ROW
+EXECUTE FUNCTION sync_slots_date_columns();
+
+-- Create notifications table
+CREATE TABLE IF NOT EXISTS notifications (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL,
+  message TEXT NOT NULL,
+  type TEXT NOT NULL CHECK (type IN ('success', 'error', 'info')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
+  is_read BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 -- Insert 15 Sports
@@ -93,6 +148,18 @@ ON CONFLICT DO NOTHING;
 -- =====================================================
 CREATE INDEX IF NOT EXISTS idx_venues_sport_id ON venues(sport_id);
 CREATE INDEX IF NOT EXISTS idx_slots_venue_id ON slots(venue_id);
+CREATE INDEX IF NOT EXISTS idx_slots_date ON slots(date);
 CREATE INDEX IF NOT EXISTS idx_bookings_slot_id ON bookings(slot_id);
+CREATE INDEX IF NOT EXISTS idx_bookings_user_id ON bookings(user_id);
 CREATE INDEX IF NOT EXISTS idx_bookings_student_email ON bookings(student_email);
 CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings(status);
+CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_is_read ON notifications(is_read);
+CREATE INDEX IF NOT EXISTS idx_notifications_created_at ON notifications(created_at DESC);
+
+DO $$
+BEGIN
+  ALTER PUBLICATION supabase_realtime ADD TABLE notifications;
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;

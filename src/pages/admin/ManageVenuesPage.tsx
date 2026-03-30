@@ -138,11 +138,11 @@ export default function ManageVenuesPage() {
   return (
     <section className="space-y-8">
       <header>
-        <h2 className="text-3xl font-bold text-slate-900">Manage Venues</h2>
-        <p className="mt-1 text-sm text-slate-600">Map every sport to organized, discoverable campus locations.</p>
+        <h2 className="text-3xl font-bold text-slate-900 lg:text-4xl">Manage Venues</h2>
+        <p className="mt-2 text-sm leading-relaxed text-slate-500 sm:text-base">Map every sport to organized, discoverable campus locations.</p>
       </header>
 
-      {error ? <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div> : null}
+      {error ? <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-red-500">{error}</div> : null}
 
       <Card>
         <CardHeader
@@ -153,11 +153,11 @@ export default function ManageVenuesPage() {
         <form onSubmit={handleVenueSubmit} className="grid gap-4">
           <div className="grid gap-4 md:grid-cols-3">
             <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">Sport</label>
+              <label className="mb-2 block text-sm font-medium text-slate-700">Sport</label>
               <select
                 value={venueSportId}
                 onChange={(event) => setVenueSportId(event.target.value)}
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 outline-none transition-all focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none transition-all focus:ring-2 focus:ring-blue-500"
               >
                 {sports.map((sport) => (
                   <option key={sport.id} value={sport.id}>
@@ -167,23 +167,23 @@ export default function ManageVenuesPage() {
               </select>
             </div>
             <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">Venue Name</label>
+              <label className="mb-2 block text-sm font-medium text-slate-700">Venue Name</label>
               <input
                 type="text"
                 value={venueName}
                 onChange={(event) => setVenueName(event.target.value)}
                 placeholder="e.g., Main Field"
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 outline-none transition-all focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none transition-all focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">Location</label>
+              <label className="mb-2 block text-sm font-medium text-slate-700">Location</label>
               <input
                 type="text"
                 value={venueLocation}
                 onChange={(event) => setVenueLocation(event.target.value)}
                 placeholder="e.g., Near Hostel A"
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 outline-none transition-all focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none transition-all focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -215,11 +215,11 @@ export default function ManageVenuesPage() {
             <Card key={venue.id} hoverable>
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
+                  <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">
                     {venue.sports?.name ?? 'Unknown Sport'}
                   </p>
-                  <h3 className="mt-1 text-lg font-bold text-slate-900">{venue.name}</h3>
-                  <p className="mt-1 text-sm text-slate-600">{venue.location}</p>
+                  <h3 className="mt-2 text-xl font-semibold text-slate-900">{venue.name}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-500 sm:text-base">{venue.location}</p>
                 </div>
                 <MapPin className="h-5 w-5 text-blue-600" />
               </div>

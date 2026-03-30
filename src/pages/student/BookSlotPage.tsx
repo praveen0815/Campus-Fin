@@ -10,6 +10,7 @@ import {
   formatSlotTime,
   toUserError,
 } from '../../services/student'
+import { safeCreateNotification } from '../../services/notifications'
 import type { StudentSlot, StudentSport, StudentVenue } from '../../types/student'
 import { supabase } from '../../services/supabase'
 import { Button } from '../../components/ui/Button'
@@ -115,7 +116,7 @@ export default function BookSlotPage() {
   const handleBook = async (slot: StudentSlot) => {
     if (!profile?.id || !profile.email) {
       setError('You must be signed in to book a slot.')
-      toast.error('Something went wrong')
+      toast.error('You must be signed in to continue')
       return
     }
 
@@ -135,10 +136,18 @@ export default function BookSlotPage() {
     } catch (bookError) {
       const message = toUserError(bookError, 'Unable to complete booking.')
       setError(message)
+      await safeCreateNotification({
+        user_id: profile.id,
+        message: message.toLowerCase().includes('already booked')
+          ? 'Booking failed. The slot is already booked'
+          : 'Booking failed. Please try again',
+        type: 'error',
+      })
+
       if (message.toLowerCase().includes('already booked')) {
         toast('Slot already booked')
       } else {
-        toast.error('Something went wrong')
+        toast.error(message)
       }
     } finally {
       setBookingSlotId(null)
@@ -150,20 +159,20 @@ export default function BookSlotPage() {
   }
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-8">
       <header>
-        <h1 className="text-3xl font-bold text-slate-900">Book Slot</h1>
-        <p className="mt-1 text-sm text-slate-600">Follow the 4-step flow to reserve your preferred slot.</p>
+        <h1 className="text-3xl font-bold text-slate-900 lg:text-4xl">Book Slot</h1>
+        <p className="mt-1 text-base leading-relaxed text-slate-500">Follow the 4-step flow to reserve your preferred slot.</p>
       </header>
 
-      {error ? <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div> : null}
+      {error ? <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-red-500">{error}</div> : null}
 
       <Card>
-        <p className="mb-3 flex items-center gap-2 text-sm font-bold text-slate-900">
+        <p className="mb-4 flex items-center gap-2 text-xl font-semibold text-slate-900">
           <Trophy className="h-4 w-4 text-blue-600" />
           Step 1: Choose Sport
         </p>
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {sports.map((sport) => (
             <button
               key={sport.id}
@@ -175,14 +184,14 @@ export default function BookSlotPage() {
                   : 'border-slate-200 bg-white text-slate-700 hover:border-blue-200'
               }`}
             >
-              <p className="font-semibold">{sport.name}</p>
+              <p className="text-base font-semibold sm:text-lg">{sport.name}</p>
             </button>
           ))}
         </div>
       </Card>
 
       <Card>
-        <p className="mb-3 flex items-center gap-2 text-sm font-bold text-slate-900">
+        <p className="mb-4 flex items-center gap-2 text-xl font-semibold text-slate-900">
           <MapPin className="h-4 w-4 text-blue-600" />
           Step 2: Choose Venue
         </p>
@@ -193,7 +202,7 @@ export default function BookSlotPage() {
             description="Please select a sport with active venues."
           />
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {venues.map((venue) => (
               <button
                 key={venue.id}
@@ -205,8 +214,8 @@ export default function BookSlotPage() {
                     : 'border-slate-200 bg-white hover:border-blue-200'
                 }`}
               >
-                <p className="font-semibold text-slate-900">{venue.name}</p>
-                <p className="text-sm text-slate-600">{venue.location}</p>
+                <p className="text-base font-semibold text-slate-900 sm:text-lg">{venue.name}</p>
+                <p className="text-sm leading-relaxed text-slate-500 sm:text-base">{venue.location}</p>
               </button>
             ))}
           </div>
@@ -214,7 +223,7 @@ export default function BookSlotPage() {
       </Card>
 
       <Card>
-        <p className="mb-3 flex items-center gap-2 text-sm font-bold text-slate-900">
+        <p className="mb-4 flex items-center gap-2 text-xl font-semibold text-slate-900">
           <CalendarDays className="h-4 w-4 text-blue-600" />
           Step 3: Select Date
         </p>
@@ -223,14 +232,14 @@ export default function BookSlotPage() {
           value={selectedDate}
           min={formatMinDate()}
           onChange={(event) => setSelectedDate(event.target.value)}
-          className="w-full max-w-sm rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 outline-none transition-all focus:ring-2 focus:ring-blue-500"
+          className="w-full max-w-sm rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none transition-all focus:ring-2 focus:ring-blue-500"
         />
       </Card>
 
       <Card>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-          <p className="text-sm font-bold text-slate-900">Step 4: Select Slot and Book</p>
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <p className="text-xl font-semibold text-slate-900">Step 4: Select Slot and Book</p>
+          <p className="text-base font-semibold uppercase tracking-wide text-slate-500">
             {selectedSport?.name ?? 'Sport'} • {selectedDate}
           </p>
         </div>
@@ -241,41 +250,71 @@ export default function BookSlotPage() {
           <EmptyState
             icon={<CalendarDays className="h-5 w-5" />}
             title="No slots available"
-            description="No slots available"
+            description="No slots available for the selected date and venue."
           />
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {slots.map((slot) => {
-              const unavailable = slot.status !== 'available'
+          <div className="space-y-6">
+            {/* Group slots by session */}
+            {(['morning', 'evening'] as const).map((session) => {
+              const sessionSlots = slots.filter((slot) => slot.session === session)
+              if (sessionSlots.length === 0) return null
+
+              const sessionLabel = session === 'morning' ? '🌅 Morning (6 AM - 11 AM)' : '🌆 Evening (4 PM - 11 PM)'
+
               return (
-                <article
-                  key={slot.id}
-                  className={`rounded-xl border p-4 transition-all ${
-                    unavailable
-                      ? 'border-slate-200 bg-slate-50 opacity-85'
-                      : 'border-blue-200 bg-blue-50/40 hover:scale-105 hover:shadow-lg'
-                  }`}
-                >
-                  <div className="mb-3 flex items-center justify-between gap-2">
-                    <p className="text-sm font-bold text-slate-900">{formatSlotTime(slot)}</p>
-                    <StatusBadge status={slot.status} />
+                <div key={session} className="space-y-3">
+                  <h3 className="text-lg font-semibold text-slate-900">{sessionLabel}</h3>
+                  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                    {sessionSlots.map((slot) => {
+                      const unavailable = slot.status !== 'available'
+                      return (
+                        <article
+                          key={slot.id}
+                          className={`rounded-xl border-2 p-4 transition-all ${
+                            unavailable
+                              ? 'border-slate-200 bg-slate-50 opacity-60'
+                              : 'cursor-pointer border-blue-300 bg-gradient-to-br from-blue-50 to-blue-50/50 hover:border-blue-500 hover:shadow-md'
+                          }`}
+                          onClick={() => {
+                            if (!unavailable) void handleBook(slot)
+                          }}
+                        >
+                          <div className="mb-3 flex items-start justify-between gap-2">
+                            <div>
+                              <p className="text-base font-bold text-slate-900">{formatSlotTime(slot)}</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                                1 Hr
+                              </span>
+                              <StatusBadge status={slot.status} />
+                            </div>
+                          </div>
+
+                          <div className="mb-4 space-y-1">
+                            <p className="text-sm font-medium text-slate-700">{slot.venues?.name}</p>
+                            <p className="text-xs text-slate-500">{slot.venues?.location}</p>
+                          </div>
+
+                          <Button
+                            type="button"
+                            size="sm"
+                            fullWidth
+                            loading={bookingSlotId === slot.id}
+                            disabled={unavailable || bookingSlotId === slot.id}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              void handleBook(slot)
+                            }}
+                          >
+                            <CheckCircle2 className="h-4 w-4" />
+                            {unavailable ? 'Not Available' : 'Book Now'}
+                          </Button>
+                        </article>
+                      )
+                    })}
                   </div>
-
-                  <p className="mb-4 text-xs text-slate-600">
-                    {slot.venues?.name} • {slot.venues?.location}
-                  </p>
-
-                  <Button
-                    type="button"
-                    fullWidth
-                    loading={bookingSlotId === slot.id}
-                    disabled={unavailable || bookingSlotId === slot.id}
-                    onClick={() => void handleBook(slot)}
-                  >
-                    <CheckCircle2 className="h-4 w-4" />
-                    {unavailable ? 'Unavailable' : 'Book Slot'}
-                  </Button>
-                </article>
+                </div>
               )
             })}
           </div>

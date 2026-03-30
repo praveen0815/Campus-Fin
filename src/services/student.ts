@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { safeCreateNotification, safeNotifyAdmins } from './notifications'
 import type {
   StudentBooking,
   StudentBookingStatus,
@@ -28,6 +29,17 @@ function toTimeLabel(value: string) {
   return `${hour12}:${m} ${meridiem}`
 }
 
+function buildAdminBookingMessage(booking: StudentBooking) {
+  const sport = booking.slots?.venues?.sports?.name
+  const startTime = booking.slots?.start_time
+
+  if (!sport || !startTime) {
+    return 'New booking received'
+  }
+
+  return `New booking received for ${sport} at ${toTimeLabel(startTime)}`
+}
+
 function mapVenue(row: {
   id: string
   sport_id: string
@@ -49,6 +61,7 @@ function mapVenue(row: {
 function mapSlot(row: {
   id: string
   venue_id: string
+  date?: string | null
   slot_date?: string | null
   session?: string | null
   start_time: string
@@ -71,11 +84,13 @@ function mapSlot(row: {
 }): StudentSlot {
   const venue = pickFirst(row.venues)
   const sport = venue ? pickFirst(venue.sports) : null
+  const normalizedDate = row.date ?? row.slot_date ?? null
 
   return {
     id: row.id,
     venue_id: row.venue_id,
-    slot_date: row.slot_date ?? null,
+    date: normalizedDate,
+    slot_date: normalizedDate,
     session: row.session ?? null,
     start_time: row.start_time,
     end_time: row.end_time,
@@ -101,6 +116,7 @@ function mapBooking(row: {
   slots?: {
     id: string
     venue_id: string
+    date?: string | null
     slot_date?: string | null
     session?: string | null
     start_time: string
@@ -120,6 +136,7 @@ function mapBooking(row: {
   } | {
     id: string
     venue_id: string
+    date?: string | null
     slot_date?: string | null
     session?: string | null
     start_time: string
@@ -338,7 +355,7 @@ export async function createBooking(payload: {
       slot_id: payload.slotId,
       status: 'confirmed',
     })
-    .select('id, slot_id, user_id, student_email, status, created_at, slots(id, venue_id, slot_date, session, start_time, end_time, status, venues(id, name, location, sports(id, name)))')
+    .select('id, slot_id, user_id, student_email, status, created_at, slots(id, venue_id, date, slot_date, session, start_time, end_time, status, venues(id, name, location, sports(id, name)))')
     .single()
 
   let inserted: unknown = tryPrimary.data
@@ -366,14 +383,24 @@ export async function createBooking(payload: {
   }
 
   await tryUpdateSlotStatus(payload.slotId, 'booked')
+  const booking = mapBooking(inserted as Parameters<typeof mapBooking>[0])
 
-  return mapBooking(inserted as Parameters<typeof mapBooking>[0])
+  await Promise.all([
+    safeCreateNotification({
+      user_id: payload.userId,
+      message: 'Your slot has been booked successfully',
+      type: 'success',
+    }),
+    safeNotifyAdmins(buildAdminBookingMessage(booking), 'info'),
+  ])
+
+  return booking
 }
 
 export async function fetchStudentBookings(payload: { userId: string; userEmail: string }) {
   const byUser = await supabase
     .from('bookings')
-    .select('id, slot_id, user_id, student_email, status, created_at, slots(id, venue_id, slot_date, session, start_time, end_time, status, venues(id, name, location, sports(id, name)))')
+    .select('id, slot_id, user_id, student_email, status, created_at, slots(id, venue_id, date, slot_date, session, start_time, end_time, status, venues(id, name, location, sports(id, name)))')
     .eq('user_id', payload.userId)
     .order('created_at', { ascending: false })
 
@@ -402,7 +429,7 @@ export async function cancelBooking(payload: {
     .from('bookings')
     .update({ status: 'cancelled' })
     .eq('id', payload.bookingId)
-    .select('id, slot_id, user_id, student_email, status, created_at, slots(id, venue_id, slot_date, session, start_time, end_time, status, venues(id, name, location, sports(id, name)))')
+    .select('id, slot_id, user_id, student_email, status, created_at, slots(id, venue_id, date, slot_date, session, start_time, end_time, status, venues(id, name, location, sports(id, name)))')
     .single()
 
   if (error) {
@@ -410,8 +437,20 @@ export async function cancelBooking(payload: {
   }
 
   await tryUpdateSlotStatus(payload.slotId, 'available')
+  const updatedBooking = mapBooking(data as Parameters<typeof mapBooking>[0])
 
-  return mapBooking(data as Parameters<typeof mapBooking>[0])
+  await Promise.all([
+    updatedBooking.user_id
+      ? safeCreateNotification({
+          user_id: updatedBooking.user_id,
+          message: 'Your booking has been cancelled',
+          type: 'info',
+        })
+      : Promise.resolve(),
+    safeNotifyAdmins('A booking has been cancelled', 'info'),
+  ])
+
+  return updatedBooking
 }
 
 export async function fetchDashboardData(payload: {
@@ -461,6 +500,11 @@ async function fetchSlotsCountForToday(today: string) {
 }
 
 export async function fetchProfileDetails(userId: string) {
+  // Skip database query for demo users or non-UUID format IDs
+  if (!userId || userId.includes('-') && !userId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+    return null
+  }
+
   const { data, error } = await supabase
     .from('users')
     .select('id, email, role, created_at')
@@ -474,8 +518,34 @@ export async function fetchProfileDetails(userId: string) {
   return data
 }
 
+/**
+ * Converts 24-hour time format (HH:MM:SS) to 12-hour AM/PM format
+ * Example: '14:30:00' → '2:30 PM'
+ */
+export function convertTo12Hour(time24: string): string {
+  return toTimeLabel(time24)
+}
+
+/**
+ * Formats a slot with start and end times as a readable time range
+ * Example: '06:00:00' to '07:00:00' → '6:00 AM - 7:00 AM'
+ */
 export function formatSlotTime(slot: Pick<StudentSlot, 'start_time' | 'end_time'>) {
   return `${toTimeLabel(slot.start_time)} - ${toTimeLabel(slot.end_time)}`
+}
+
+/**
+ * Gets the duration in minutes between two times
+ * Example: '06:00:00' to '07:00:00' → 60 minutes
+ */
+export function getSlotDuration(startTime: string, endTime: string): number {
+  const [startHour, startMin] = startTime.split(':').map(Number)
+  const [endHour, endMin] = endTime.split(':').map(Number)
+  
+  const startMinutes = startHour * 60 + startMin
+  const endMinutes = endHour * 60 + endMin
+  
+  return endMinutes - startMinutes
 }
 
 export function toUserError(error: unknown, fallback = 'Something went wrong. Please try again.') {

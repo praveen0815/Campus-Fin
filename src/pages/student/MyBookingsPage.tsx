@@ -12,6 +12,27 @@ import { LoadingSpinner } from '../../components/ui/LoadingSpinner'
 import { Modal } from '../../components/ui/Modal'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 
+function formatBookingDate(value?: string | null) {
+  if (!value) {
+    return '--'
+  }
+
+  const parsed = new Date(`${value}T00:00:00`)
+  if (Number.isNaN(parsed.getTime())) {
+    return value
+  }
+
+  return parsed.toLocaleDateString(undefined, {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  })
+}
+
+function getBookingDateValue(booking: StudentBooking) {
+  return booking.slots?.date ?? booking.slots?.slot_date ?? null
+}
+
 export default function MyBookingsPage() {
   const { profile } = useAuth()
   const [bookings, setBookings] = useState<StudentBooking[]>([])
@@ -75,39 +96,57 @@ export default function MyBookingsPage() {
     return <LoadingSpinner centered label="Loading your bookings..." />
   }
 
+  const sortedBookings = [...bookings].sort((a, b) => {
+    const aDate = getBookingDateValue(a) ?? ''
+    const bDate = getBookingDateValue(b) ?? ''
+
+    if (aDate !== bDate) {
+      return bDate.localeCompare(aDate)
+    }
+
+    return (b.created_at ?? '').localeCompare(a.created_at ?? '')
+  })
+
   return (
-    <section className="space-y-6">
+    <section className="space-y-8">
       <header>
-        <h1 className="text-3xl font-bold text-slate-900">My Bookings</h1>
-        <p className="mt-1 text-sm text-slate-600">Track all booked slots and cancel when plans change.</p>
+        <h1 className="text-3xl font-bold text-slate-900 lg:text-4xl">My Bookings</h1>
+        <p className="mt-1 text-base leading-relaxed text-slate-500">Track all booked slots and cancel when plans change.</p>
       </header>
 
-      {error ? <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div> : null}
+      {error ? <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-red-500">{error}</div> : null}
 
       {bookings.length === 0 ? (
         <EmptyState
           icon={<CalendarClock className="h-5 w-5" />}
-          title="No bookings yet"
-          description="No bookings yet"
+          title="📭 No bookings yet"
+          description="Book a slot to see your upcoming sessions here."
         />
       ) : (
-        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-          {bookings.map((booking) => (
-            <Card key={booking.id} hoverable>
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+          {sortedBookings.map((booking) => (
+            <Card key={booking.id} hoverable className="space-y-2 rounded-xl p-5 shadow-sm">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-lg font-bold text-slate-900">{booking.slots?.venues?.sports?.name ?? '--'}</p>
-                  <p className="text-sm text-slate-600">{booking.slots?.venues?.name ?? '--'}</p>
+                  <p className="text-lg font-semibold text-slate-900">
+                    {(booking.slots?.venues?.sports?.name ?? '--') + ' - ' + (booking.slots?.venues?.name ?? '--')}
+                  </p>
                 </div>
                 <StatusBadge status={booking.status} />
               </div>
 
-              <div className="mt-4 rounded-xl bg-slate-50 px-4 py-3 text-sm text-slate-700">
+              <div className="mt-5 rounded-xl bg-slate-50 px-4 py-4 text-base text-slate-700">
                 <p>
-                  <span className="font-semibold">Date:</span> {booking.slots?.slot_date ?? '--'}
+                  <span className="font-semibold">📅 Date:</span> {formatBookingDate(getBookingDateValue(booking))}
                 </p>
                 <p className="mt-1">
-                  <span className="font-semibold">Time:</span> {booking.slots ? formatSlotTime(booking.slots) : '--'}
+                  <span className="font-semibold">⏰ Time:</span> {booking.slots ? formatSlotTime(booking.slots) : '--'}
+                </p>
+                <p className="mt-1">
+                  <span className="font-semibold">🏟 Venue:</span> {booking.slots?.venues?.name ?? '--'}
+                </p>
+                <p className="mt-1">
+                  <span className="font-semibold">🏅 Sport:</span> {booking.slots?.venues?.sports?.name ?? '--'}
                 </p>
               </div>
 
@@ -141,3 +180,4 @@ export default function MyBookingsPage() {
     </section>
   )
 }
+

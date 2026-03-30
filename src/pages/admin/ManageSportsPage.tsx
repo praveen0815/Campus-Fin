@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Plus, Trash2, Trophy } from 'lucide-react'
-import { createSport, deleteSport, fetchSports, toUserError } from '../../services/admin'
+import { Pencil, Plus, Trash2, Trophy } from 'lucide-react'
+import { createSport, deleteSport, fetchSports, toUserError, updateSport } from '../../services/admin'
 import type { Sport } from '../../types/admin'
 import { Button } from '../../components/ui/Button'
 import { Card, CardHeader } from '../../components/ui/Card'
@@ -15,6 +15,9 @@ export default function ManageSportsPage() {
   const [error, setError] = useState<string | null>(null)
   const [sportName, setSportName] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [editingSport, setEditingSport] = useState<Sport | null>(null)
+  const [updatedName, setUpdatedName] = useState('')
+  const [updating, setUpdating] = useState(false)
   const [deletingSport, setDeletingSport] = useState<Sport | null>(null)
   const [deleting, setDeleting] = useState(false)
 
@@ -88,6 +91,53 @@ export default function ManageSportsPage() {
     }
   }
 
+  const openEditMode = (sport: Sport) => {
+    setError(null)
+    setEditingSport(sport)
+    setUpdatedName(sport.name)
+  }
+
+  const cancelEditMode = () => {
+    setEditingSport(null)
+    setUpdatedName('')
+  }
+
+  const handleUpdateSport = async () => {
+    if (!editingSport) {
+      return
+    }
+
+    const normalized = updatedName.trim()
+    if (!normalized) {
+      setError('Sport name is required.')
+      toast.error('Sport name cannot be empty')
+      return
+    }
+
+    const duplicate = sports.some(
+      (sport) => sport.id !== editingSport.id && sport.name.toLowerCase() === normalized.toLowerCase(),
+    )
+    if (duplicate) {
+      setError('Sport already exists. Duplicates are not allowed.')
+      toast.error('Sport already exists')
+      return
+    }
+
+    setUpdating(true)
+    setError(null)
+    try {
+      const updated = await updateSport(editingSport.id, normalized)
+      setSports((prev) => prev.map((sport) => (sport.id === editingSport.id ? updated : sport)))
+      toast.success('Sport updated successfully')
+      cancelEditMode()
+    } catch (updateError) {
+      setError(toUserError(updateError, 'Unable to update sport.'))
+      toast.error('Something went wrong')
+    } finally {
+      setUpdating(false)
+    }
+  }
+
   if (loading) {
     return <LoadingSpinner centered label="Loading sports..." />
   }
@@ -95,17 +145,17 @@ export default function ManageSportsPage() {
   return (
     <section className="space-y-8">
       <header>
-        <h2 className="text-3xl font-bold text-slate-900">Manage Sports</h2>
-        <p className="mt-1 text-sm text-slate-600">Create and manage all sports available on campus.</p>
+        <h2 className="text-3xl font-bold text-slate-900 lg:text-4xl">Manage Sports</h2>
+        <p className="mt-2 text-sm leading-relaxed text-slate-500 sm:text-base">Create and manage all sports available on campus.</p>
       </header>
 
-      {error ? <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div> : null}
+      {error ? <div className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-red-500">{error}</div> : null}
 
       <Card>
         <CardHeader title="Add New Sport" subtitle="Use clear names to keep student booking simple." />
         <form onSubmit={handleAddSport} className="grid gap-3 sm:grid-cols-[1fr_auto]">
           <div>
-            <label htmlFor="sport-name" className="mb-2 block text-sm font-semibold text-slate-700">
+            <label htmlFor="sport-name" className="mb-2 block text-sm font-medium text-slate-700">
               Sport Name
             </label>
             <input
@@ -114,7 +164,7 @@ export default function ManageSportsPage() {
               value={sportName}
               onChange={(event) => setSportName(event.target.value)}
               placeholder="e.g., Football"
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 outline-none transition-all focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none transition-all focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="sm:pt-8">
@@ -135,17 +185,51 @@ export default function ManageSportsPage() {
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {sortedSports.map((sport) => (
-            <Card key={sport.id} hoverable className="flex items-center justify-between">
-              <div>
-                <p className="text-lg font-bold text-slate-900">{sport.name}</p>
-                <p className="mt-1 text-xs text-slate-500">
-                  Added {sport.created_at ? new Date(sport.created_at).toLocaleDateString() : 'recently'}
-                </p>
+            <Card
+              key={sport.id}
+              hoverable
+              className={`flex items-center justify-between gap-4 ${editingSport?.id === sport.id ? 'bg-blue-50' : ''}`}
+            >
+              <div className="min-w-0 flex-1">
+                {editingSport?.id === sport.id ? (
+                  <div className="space-y-2">
+                    <input
+                      value={updatedName}
+                      onChange={(event) => setUpdatedName(event.target.value)}
+                      className="w-full rounded-lg border border-slate-300 bg-white p-2 text-base text-slate-900 outline-none transition-all focus:ring-2 focus:ring-blue-500"
+                      placeholder="Enter sport name"
+                    />
+                    <div className="flex items-center space-x-2">
+                      <Button type="button" size="sm" loading={updating} onClick={() => void handleUpdateSport()}>
+                        Save
+                      </Button>
+                      <Button type="button" variant="secondary" size="sm" onClick={cancelEditMode}>
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-xl font-semibold text-slate-900">{sport.name}</p>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Added {sport.created_at ? new Date(sport.created_at).toLocaleDateString() : 'recently'}
+                    </p>
+                  </>
+                )}
               </div>
-              <Button type="button" variant="danger" size="sm" onClick={() => setDeletingSport(sport)}>
-                <Trash2 className="h-4 w-4" />
-                Delete
-              </Button>
+
+              {editingSport?.id === sport.id ? null : (
+                <div className="flex items-center space-x-2">
+                  <Button type="button" variant="secondary" size="sm" onClick={() => openEditMode(sport)}>
+                    <Pencil className="h-4 w-4" />
+                    Edit
+                  </Button>
+                  <Button type="button" variant="danger" size="sm" onClick={() => setDeletingSport(sport)}>
+                    <Trash2 className="h-4 w-4" />
+                    Delete
+                  </Button>
+                </div>
+              )}
             </Card>
           ))}
         </div>

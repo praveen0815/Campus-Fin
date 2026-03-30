@@ -16,11 +16,11 @@ const toneClass: Record<NonNullable<StudentStatCardProps['tone']>, string> = {
 
 export function StudentStatCard({ label, value, icon, tone = 'slate' }: StudentStatCardProps) {
   return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
-          <p className="mt-2 text-2xl font-semibold text-slate-900">{value}</p>
+          <p className="text-sm font-medium uppercase tracking-wide text-slate-500">{label}</p>
+          <p className="mt-2 text-3xl font-bold text-slate-900">{value}</p>
         </div>
         <div className={`rounded-xl p-2.5 ${toneClass[tone]}`}>{icon}</div>
       </div>

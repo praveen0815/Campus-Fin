@@ -15,10 +15,13 @@ const DEMO_ADMIN_EMAIL = import.meta.env.VITE_DEMO_ADMIN_EMAIL ?? 'admin@slotsph
 const DEMO_ADMIN_PASSWORD = import.meta.env.VITE_DEMO_ADMIN_PASSWORD ?? 'Admin@123'
 const DEMO_STUDENT_EMAIL = import.meta.env.VITE_DEMO_STUDENT_EMAIL ?? 'student@bitsathy.ac.in'
 const DEMO_STUDENT_PASSWORD = import.meta.env.VITE_DEMO_STUDENT_PASSWORD ?? 'Student@123'
+const DEMO_ADMIN_ID =
+  import.meta.env.VITE_NOTIFICATION_ADMIN_USER_ID ?? '00000000-0000-0000-0000-000000000001'
+const DEMO_STUDENT_ID = '00000000-0000-0000-0000-000000000002'
 
 function createDemoAdminProfile(email: string): UserProfile {
   return {
-    id: 'demo-admin-user',
+    id: DEMO_ADMIN_ID,
     email,
     role: 'admin',
     created_at: new Date().toISOString(),
@@ -27,7 +30,7 @@ function createDemoAdminProfile(email: string): UserProfile {
 
 function createDemoStudentProfile(email: string): UserProfile {
   return {
-    id: 'demo-student-user',
+    id: DEMO_STUDENT_ID,
     email,
     role: 'student',
     created_at: new Date().toISOString(),

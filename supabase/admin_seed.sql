@@ -20,10 +20,21 @@ create table if not exists public.venues (
 create table if not exists public.slots (
   id uuid primary key default gen_random_uuid(),
   venue_id uuid not null references public.venues(id) on delete restrict,
+  date date,
+  slot_date date,
   session text not null check (session in ('morning', 'evening')),
   start_time time not null,
   end_time time not null,
   created_at timestamptz not null default timezone('utc', now())
+);
+
+create table if not exists public.notifications (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  message text not null,
+  type text not null check (type in ('success', 'error', 'info')),
+  created_at timestamptz not null default timezone('utc', now()),
+  is_read boolean not null default false
 );
 
 -- 2) Insert predefined sports (deduplicated by unique name)
@@ -71,3 +82,13 @@ on conflict (name, location) do nothing;
 -- Optional indexes for admin listing/filtering
 create index if not exists idx_venues_sport_id on public.venues(sport_id);
 create index if not exists idx_slots_venue_id on public.slots(venue_id);
+create index if not exists idx_notifications_user_id on public.notifications(user_id);
+create index if not exists idx_notifications_is_read on public.notifications(is_read);
+create index if not exists idx_notifications_created_at on public.notifications(created_at desc);
+
+do $$
+begin
+  alter publication supabase_realtime add table public.notifications;
+exception
+  when duplicate_object then null;
+end $$;

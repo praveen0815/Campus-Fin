@@ -48,17 +48,17 @@ export default function Signup() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-4">
-      <section className="w-full max-w-md rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-xl backdrop-blur">
-        <p className="text-sm font-medium tracking-wide text-cyan-700">Supabase Auth</p>
-        <h1 className="mt-2 text-3xl font-semibold text-slate-900">Create Account</h1>
-        <p className="mt-2 text-sm text-slate-600">
+    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-200 p-4 transition-colors duration-300">
+      <section className="w-full max-w-md rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-xl backdrop-blur sm:p-10 transition-colors duration-300">
+        <p className="text-base font-medium tracking-wide text-cyan-700">Supabase Auth</p>
+        <h1 className="mt-2 text-3xl font-semibold text-slate-900 sm:text-4xl">Create Account</h1>
+        <p className="mt-3 text-sm leading-relaxed text-slate-500 sm:text-base">
           Sign up to get started. New accounts are assigned the student role.
         </p>
 
-        <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium text-slate-700">
+            <label htmlFor="email" className="mb-2 block text-sm font-medium text-slate-700">
               Email
             </label>
             <input
@@ -66,7 +66,7 @@ export default function Signup() {
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 placeholder-slate-500"
               placeholder="you@example.com"
               autoComplete="email"
               required
@@ -74,7 +74,7 @@ export default function Signup() {
           </div>
 
           <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium text-slate-700">
+            <label htmlFor="password" className="mb-2 block text-sm font-medium text-slate-700">
               Password
             </label>
             <input
@@ -82,26 +82,26 @@ export default function Signup() {
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 placeholder-slate-500"
               placeholder="At least 6 characters"
               autoComplete="new-password"
               required
             />
           </div>
 
-          {error ? <p className="text-sm text-rose-700">{error}</p> : null}
+          {error ? <p className="text-sm text-red-500">{error}</p> : null}
           {message ? <p className="text-sm text-emerald-700">{message}</p> : null}
 
           <button
             type="submit"
             disabled={loading || !canSubmit}
-            className="w-full rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+            className="w-full rounded-xl bg-slate-900 px-6 py-3 text-base font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400"
           >
             {loading ? 'Creating account...' : 'Signup'}
           </button>
         </form>
 
-        <p className="mt-5 text-sm text-slate-600">
+        <p className="mt-6 text-sm leading-relaxed text-slate-500 sm:text-base">
           Already have an account?{' '}
           <Link to="/" className="font-medium text-cyan-700 hover:text-cyan-800">
             Login
@@ -111,3 +111,4 @@ export default function Signup() {
     </main>
   )
 }
+

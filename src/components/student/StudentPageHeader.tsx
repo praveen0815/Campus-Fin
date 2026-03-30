@@ -5,9 +5,9 @@ interface StudentPageHeaderProps {
 
 export function StudentPageHeader({ title, subtitle }: StudentPageHeaderProps) {
   return (
-    <header className="mb-6">
-      <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">{title}</h1>
-      {subtitle ? <p className="mt-1 text-sm text-slate-600">{subtitle}</p> : null}
+    <header className="mb-8">
+      <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl">{title}</h1>
+      {subtitle ? <p className="mt-2 text-sm leading-relaxed text-slate-500 sm:text-base">{subtitle}</p> : null}
     </header>
   )
 }

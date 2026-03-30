@@ -343,7 +343,7 @@ export default function AdminDashboard() {
                         <button
                           type="button"
                           onClick={() => void handleDeleteSport(sport)}
-                          className="rounded-lg bg-rose-100 px-3 py-1.5 text-xs font-medium text-rose-700 transition hover:bg-rose-200"
+                          className="rounded-lg bg-rose-100 px-3 py-1.5 text-sm font-medium text-rose-700 transition hover:bg-rose-200"
                         >
                           Delete
                         </button>
@@ -426,14 +426,14 @@ export default function AdminDashboard() {
                           <button
                             type="button"
                             onClick={() => startEditVenue(venue)}
-                            className="rounded-lg bg-sky-100 px-3 py-1.5 text-xs font-medium text-sky-700 transition hover:bg-sky-200"
+                            className="rounded-lg bg-sky-100 px-3 py-1.5 text-sm font-medium text-sky-700 transition hover:bg-sky-200"
                           >
                             Edit
                           </button>
                           <button
                             type="button"
                             onClick={() => void handleDeleteVenue(venue)}
-                            className="rounded-lg bg-rose-100 px-3 py-1.5 text-xs font-medium text-rose-700 transition hover:bg-rose-200"
+                            className="rounded-lg bg-rose-100 px-3 py-1.5 text-sm font-medium text-rose-700 transition hover:bg-rose-200"
                           >
                             Delete
                           </button>
@@ -509,7 +509,7 @@ export default function AdminDashboard() {
                         <button
                           type="button"
                           onClick={() => void handleDeleteSlot(slot.id)}
-                          className="rounded-lg bg-rose-100 px-3 py-1.5 text-xs font-medium text-rose-700 transition hover:bg-rose-200"
+                          className="rounded-lg bg-rose-100 px-3 py-1.5 text-sm font-medium text-rose-700 transition hover:bg-rose-200"
                         >
                           Delete
                         </button>

@@ -18,9 +18,12 @@ export type SlotSession = 'morning' | 'evening'
 export interface Slot {
   id: string
   venue_id: string
+  date?: string | null
+  slot_date?: string | null
   session: SlotSession
   start_time: string
   end_time: string
+  status?: 'available' | 'booked' | 'disabled'
   created_at?: string
   venues?: Pick<Venue, 'id' | 'name' | 'location'> & {
     sports?: Pick<Sport, 'id' | 'name'> | null

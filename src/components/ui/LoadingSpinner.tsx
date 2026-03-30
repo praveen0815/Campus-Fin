@@ -27,7 +27,7 @@ export function LoadingSpinner({
   centered = false,
 }: LoadingSpinnerProps) {
   const spinner = (
-    <span className="inline-flex items-center gap-2 text-sm text-slate-600" role="status" aria-live="polite">
+    <span className="inline-flex items-center gap-2 text-base text-slate-600" role="status" aria-live="polite">
       <span className={`animate-spin rounded-full ${sizeStyles[size]} ${colorStyles[color]}`} />
       {label ? <span>{label}</span> : null}
     </span>
@@ -39,3 +39,4 @@ export function LoadingSpinner({
 
   return <div className="flex items-center justify-center py-10">{spinner}</div>
 }
+

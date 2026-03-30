@@ -16,6 +16,7 @@ export type SlotAvailability = 'available' | 'booked' | 'disabled'
 export interface StudentSlot {
   id: string
   venue_id: string
+  date?: string | null
   slot_date?: string | null
   session?: string | null
   start_time: string

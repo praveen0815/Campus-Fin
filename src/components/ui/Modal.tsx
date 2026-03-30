@@ -33,11 +33,11 @@ export function Modal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
-        <div className="mb-4 flex items-start justify-between gap-3">
+      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl transition-colors duration-300">
+        <div className="mb-6 flex items-start justify-between gap-3">
           <div>
-            <h3 className="text-lg font-bold text-slate-900">{title}</h3>
-            {description ? <p className="mt-1 text-sm text-slate-600">{description}</p> : null}
+            <h3 className="text-xl font-semibold text-slate-900">{title}</h3>
+            {description ? <p className="mt-2 text-sm leading-relaxed text-slate-500">{description}</p> : null}
           </div>
           <button
             type="button"
@@ -49,7 +49,7 @@ export function Modal({
           </button>
         </div>
 
-        {children ? <div className="mb-4">{children}</div> : null}
+        {children ? <div className="mb-6">{children}</div> : null}
 
         <div className="flex justify-end gap-2">
           <Button type="button" variant="secondary" onClick={onClose}>
@@ -65,3 +65,4 @@ export function Modal({
     </div>
   )
 }
+
