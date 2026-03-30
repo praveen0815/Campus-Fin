@@ -149,8 +149,7 @@ The system follows a **Three-Tier Architecture**:
 # 👨‍💻 Developer
 
 **PRAVEENKUMAR R**
-
-Campus Sports Booking System (SlotSphere)
+Email : praveen72696@gmail.com 
 
 ---
 
