@@ -76,8 +76,6 @@ It empowers both **students** and **administrators** through a seamless, respons
 * Improves maintainability and performance
 * Enables independent development of each layer
 
-SlotSphere follows a **Three-Tier Architecture**:
-
 ## 🖥️ Presentation Layer
 <img width="1098" height="412" alt="image" src="https://github.com/user-attachments/assets/6d21b826-48eb-4d80-9126-4c959164fb93" />
 
