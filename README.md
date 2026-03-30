@@ -120,23 +120,14 @@ SlotSphere follows a **Three-Tier Architecture**:
 
 # 🗄️ Database Design
 
-## Core Tables
+<img width="1074" height="524" alt="image" src="https://github.com/user-attachments/assets/b4ff0136-d6c8-4faf-b2dc-7ba1cd6d609e" />
 
-* profiles
-* sports
-* venues
-* slots
-* bookings
-* notifications
 
 ---
 
 ## Relationships
+<img width="982" height="503" alt="image" src="https://github.com/user-attachments/assets/c2f702b6-bb22-4b01-b76e-e2158b3bd484" />
 
-* One Sport → Many Venues
-* One Venue → Many Slots
-* One User → Many Bookings
-* One Slot → One Booking
 
 ---
 
@@ -301,22 +292,14 @@ slot-sphere/
 
 # ⚙️ Technology Stack
 
-## Frontend
+<img width="1077" height="739" alt="Screenshot 2026-03-30 220358" src="https://github.com/user-attachments/assets/f5544294-6867-4fba-ba70-8ef699a1d3cb" />
 
-* React
-* TypeScript
-* Tailwind CSS
-* Vite
-
-## Backend
-
-* Supabase Auth
-* Supabase APIs
-* PostgreSQL
 
 ---
 
 # 🧪 Testing & Validation
+
+<img width="1105" height="678" alt="image" src="https://github.com/user-attachments/assets/5e693e0d-8c62-4e35-bb32-34bf369b2520" />
 
 * Input validation
 * Slot conflict prevention
@@ -327,8 +310,8 @@ slot-sphere/
 
 # 🚀 Deployment
 
-* Supabase backend
-* Vercel / Netlify frontend
+<img width="1133" height="561" alt="Screenshot 2026-03-30 221903" src="https://github.com/user-attachments/assets/6406d446-81bd-4a5f-8e11-d13a8a57208b" />
+
 
 ---
 
