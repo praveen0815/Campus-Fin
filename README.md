@@ -75,7 +75,8 @@ The system ensures efficient resource management, prevents scheduling conflicts,
 
 # 🏗️ System Architecture
 
-![Architecture](docs/screenshots/architecture.png)
+<img width="984" height="594" alt="image" src="https://github.com/user-attachments/assets/d90e10e2-4149-49ee-92e9-e1a5cfa04d9b" />
+
 
 The system follows a **Three-Tier Architecture**:
 
