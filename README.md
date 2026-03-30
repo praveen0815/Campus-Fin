@@ -1,159 +1,354 @@
 # 🏟️ Campus Sports Booking System
 
-SlotSphere is a full-stack campus sports booking platform that enables students to reserve sports facilities in real-time while providing administrators complete control over sports, venues, slots, and bookings.
+Campus Sports Booking System is a modern, full-stack campus sports booking platform that digitizes facility reservations, eliminates scheduling conflicts, and provides real-time visibility into sports infrastructure usage.
 
-The system ensures efficient resource management, prevents scheduling conflicts, and delivers a seamless user experience through a modern UI and real-time updates.
-
----
-
-# 🚀 What Makes SlotSphere Different
-
-* ⚡ Real-time slot booking using Supabase
-* 🔐 Role-based authentication (Student & Admin)
-* ⏰ Hour-based slot system (no overlapping bookings)
-* 🔔 Real-time notification system
-* 📊 Admin dashboard with analytics
-* 🎯 Clean and modern UI
+It empowers both **students** and **administrators** through a seamless, responsive, and scalable web application.
 
 ---
 
-# 🎯 Feature Tour
+# 🌟 What Makes Unique
 
-## 👨‍🎓 Student Portal
+* ⚡ Real-time slot booking with conflict prevention
+* 🎯 Role-based access (Student / Admin)
+* 🔐 Secure authentication using Supabase
+* 📊 Built-in analytics for decision making
+* 🔔 Live notification system
+* 🧩 Modular and scalable architecture
 
-<img width="1904" height="946" alt="Student Dashboard" src="https://github.com/user-attachments/assets/d59a897d-4daf-47e3-8d1b-97235d1718b2" />
+---
+
+# 🚀 Feature Overview
+
+## 👨‍🎓 Student Experience
+
+* Browse sports and venues
+* 📅 Book slots using Book Slot page
+* Select date, venue, and time
+* View “My Bookings” with full details
+* Cancel bookings instantly
+* Receive real-time updates
+
+---
+
+## 👨‍💼 Admin Experience
+
+* Manage sports, venues, and slots
+* Control booking flow
+* Monitor all reservations
+* Access analytics dashboard
+* Maintain system integrity
+
+---
+
+## ⏰ Smart Slot System
+
+* Session-based slots (Morning / Evening)
+* Hour-wise booking system
+* Prevents overlapping bookings
+* Dynamic availability updates
+
+---
+
+## 🔔 Real-Time Notifications
+
+* Booking confirmations
+* Admin alerts
+* System updates using Supabase Realtime
+
+---
+
+# 📊 Analytics & Insights
+
+* 📈 Total bookings
+* 🏆 Popular sports
+* ⏰ Peak usage hours
+* 📊 Venue utilization
+
+---
+
+# 🏗️ System Architecture Overview
+
+<img width="984" height="594" alt="Screenshot 2026-03-30 201418" src="https://github.com/user-attachments/assets/28a2ea72-7e4e-4323-8a4e-0e0f1cc77ac2" />
+
+SlotSphere follows a **Three-Tier Architecture**:
+
+## 🖥️ Presentation Layer
+<img width="1098" height="412" alt="image" src="https://github.com/user-attachments/assets/6d21b826-48eb-4d80-9126-4c959164fb93" />
 
 
-* View available sports and venues
-* Book slots based on time and availability
-* Real-time slot updates
-* Access personal dashboard
+## ⚙️ Application Layer
+<img width="866" height="439" alt="image" src="https://github.com/user-attachments/assets/c64a7d46-2102-4452-9bab-a5df57ec5f0b" />
+
+
+## 🗄️ Data Layer
+<img width="865" height="373" alt="image" src="https://github.com/user-attachments/assets/1a8c8c42-2452-4d41-a1af-815f857556fd" />
+
+
+---
+
+## 🔄 System Flow
+
+<img width="1115" height="546" alt="image" src="https://github.com/user-attachments/assets/1a9622f9-4b84-4dfe-b53a-8f309e05b476" />
+
+
+---
+
+# 🧠 Technical Architecture (Deep Dive)
+
+<img width="864" height="381" alt="image" src="https://github.com/user-attachments/assets/57fb2983-e203-465a-a550-f201396c5e4c" />
+
+---
+
+## Key Capabilities
+
+### 🔐 Secure Authentication
+
+* Google OAuth
+* Role-based access control
+
+### ⚡ Real-Time Sync
+
+* Supabase subscriptions
+* Instant UI updates
+
+### 🧩 Modular Design
+
+* Component-based frontend
+* Service-based backend
+
+---
+
+# 🗄️ Database Design
+
+## Core Tables
+
+* profiles
+* sports
+* venues
+* slots
+* bookings
+* notifications
+
+---
+
+## Relationships
+
+* One Sport → Many Venues
+* One Venue → Many Slots
+* One User → Many Bookings
+* One Slot → One Booking
+
+---
+
+# 🔍 ER vs Schema
+<img width="1018" height="586" alt="image" src="https://github.com/user-attachments/assets/15750432-f94e-48ff-98c3-97b52b4c92a0" />
+
+
+| ER Model       | Database Schema   |
+| -------------- | ----------------- |
+| Conceptual     | Implementation    |
+| Visual         | Technical         |
+| Planning stage | Development stage |
+
+---
+
+## 👨‍🎓 Student Dashboard
+
+<img width="1904" height="946" alt="Student Dashboard" src="https://github.com/user-attachments/assets/081f2027-196c-4b47-a037-78b659082aca" />
+
+
+**Features:**
+
+* Displays available sports
+* Shows venues and quick actions
+* Clean UI with card layout
+* Easy navigation
 
 ---
 
 ## 📅 My Bookings
+<img width="1897" height="963" alt="Student Mybookings" src="https://github.com/user-attachments/assets/9dd7ade2-6cd3-4f20-aaba-1fe496ca897e" />
 
-<img width="1897" height="963" alt="Student Mybookings" src="https://github.com/user-attachments/assets/14977bf1-0a68-4f2d-8e4c-537dac295fc6" />
 
+**Features:**
 
-* View all booked slots
-* Displays:
-
-  * 📅 Date
-  * ⏰ Time
-  * 🏟 Venue
-  * 🏅 Sport
-* Cancel bookings easily
+* Shows booked slots with date & time
+* Displays sport and venue
+* Booking status tracking
+* Cancel option
 
 ---
 
-## 👨‍💼 Admin Portal
+## 📸 Book Slot Page
 
-<img width="1919" height="1076" alt="Admin-Dashboard" src="https://github.com/user-attachments/assets/87acf4ea-7239-43ed-af6a-f58381546047" />
+<img width="1900" height="1074" alt="Book-Slot" src="https://github.com/user-attachments/assets/a6d8fd12-3835-4fee-ad19-4c66fba28eba" />
 
 
-* Manage sports (Add / Edit / Delete)
-* Manage venues
-* Create and manage slots
-* Monitor all bookings
+**Features:**
+
+* Select sport and venue
+* Choose date and time slot
+* Real-time availability
+* Prevents double booking
+
+---
+
+## 👨‍💼 Admin Dashboard
+
+<img width="1919" height="1076" alt="Admin-Dashboard" src="https://github.com/user-attachments/assets/2fd37b5a-7643-47ff-92c3-52611688ba0f" />
+
+
+**Features:**
+
+* System overview
+* Total bookings count
+* Quick navigation
+* Central control panel
+
+---
+
+## 🏅 Manage Sports
+<img width="1917" height="1079" alt="Admin-Manage Sports" src="https://github.com/user-attachments/assets/0e840738-6de7-4d70-89d2-97207c65265c" />
+
+
+**Features:**
+
+* Add / Edit / Delete sports
+* Maintain sports list
+
+---
+
+## 🏟️ Manage Venues
+
+<img width="1902" height="1067" alt="Admin-ManageVenues" src="https://github.com/user-attachments/assets/8e657a46-5970-4729-93ff-1d19fc9b2689" />
+
+
+**Features:**
+
+* Assign venues
+* Manage locations
+
+---
+
+## ⏰ Manage Slots
+<img width="1896" height="939" alt="Manage-slot" src="https://github.com/user-attachments/assets/a507eab5-9c22-4a42-8d50-c296d1b758be" />
+
+
+**Features:**
+
+* Create hourly slots
+* Session-based control
+* Prevent overlaps
+
+---
+
+## 📋 Manage Bookings
+
+<img width="1906" height="939" alt="Admin-Bookings" src="https://github.com/user-attachments/assets/067e2e66-9ed3-427e-a80b-d375a6ee6945" />
+
+
+**Features:**
+
+* View all bookings
+* Monitor usage
+* Manage booking status
 
 ---
 
 ## 📊 Analytics Dashboard
 
-<img width="1913" height="1079" alt="Analytics" src="https://github.com/user-attachments/assets/164f6392-3235-43f0-acf0-8d83625012e6" />
+<img width="1913" height="1079" alt="Analytics" src="https://github.com/user-attachments/assets/b23f1547-c2ff-46a5-b8ff-8d4809254785" />
 
 
-* Total bookings overview
-* Popular sports tracking
-* Peak time analysis
-* Usage insights
+**Features:**
 
----
-
-# 🏗️ System Architecture
-
-<img width="984" height="594" alt="image" src="https://github.com/user-attachments/assets/d90e10e2-4149-49ee-92e9-e1a5cfa04d9b" />
-
-
-The system follows a **Three-Tier Architecture**:
-
-* **Frontend:** React + TypeScript + Tailwind CSS
-* **Backend:** Supabase (Authentication + API + Realtime)
-* **Database:** PostgreSQL
+* Booking statistics
+* Popular sports analysis
+* Peak usage timing
+* Graph-based insights
 
 ---
 
-# 🔄 System Workflow
+# 📁 Full Project Structure (Enterprise Level)
 
-1. Student logs in using institutional email
-2. Selects sport and venue
-3. Chooses available slot
-4. Books slot
-5. Admin monitors and manages bookings
-
----
-
-# 🗄️ Database Schema
-
-| Table         | Description                   |
-| ------------- | ----------------------------- |
-| profiles      | Stores user details and roles |
-| sports        | List of sports                |
-| venues        | Sports locations              |
-| slots         | Time slots for booking        |
-| bookings      | Booking records               |
-| notifications | User notifications            |
+```id="l2d9sk"
+slot-sphere/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── pages/
+│   ├── services/
+│   ├── hooks/
+│   ├── context/
+│   ├── utils/
+│   ├── types/
+│   ├── layouts/
+│   ├── routes/
+│   ├── App.tsx
+│   └── main.tsx
+│
+├── supabase/
+├── docs/screenshots/
+├── .env
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── README.md
+```
 
 ---
 
 # ⚙️ Technology Stack
 
+## Frontend
+
 * React
 * TypeScript
 * Tailwind CSS
-* Supabase
+* Vite
+
+## Backend
+
+* Supabase Auth
+* Supabase APIs
 * PostgreSQL
 
 ---
 
-# 🎨 UI/UX Design
+# 🧪 Testing & Validation
 
-* Clean dashboard layout
-* Sidebar navigation (modern style)
-* Card-based UI
-* Responsive design
-* Smooth transitions
-
----
-
-# 📊 Key Features
-
-* 📅 Date-based booking
-* ⏰ Hour-based slots
-* 🔔 Real-time notifications
-* 🔐 Secure authentication
-* ❌ No double booking system
+* Input validation
+* Slot conflict prevention
+* Role-based access testing
+* UI responsiveness checks
 
 ---
 
-# 🚀 Future Enhancements
+# 🚀 Deployment
 
+* Supabase backend
+* Vercel / Netlify frontend
+
+---
+
+# 🔮 Future Enhancements
+
+* 🤖 AI slot recommendation
+* 📱 Mobile app
 * 📊 Advanced analytics
-* 🤖 AI-based slot recommendations
-* 📱 Mobile application
-* 📥 Export booking reports
+* 📥 Report export
 
 ---
 
 # 👨‍💻 Developer
 
 **PRAVEENKUMAR R**
-* Email : praveen72696@gmail.com 
+📧 [praveen72696@gmail.com](mailto:praveen72696@gmail.com)
 
 ---
 
 # 📜 License
 
-This project is developed for academic and learning purposes.
+Academic Project – Open for learning
 
