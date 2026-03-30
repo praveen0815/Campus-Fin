@@ -148,7 +148,8 @@ The system follows a **Three-Tier Architecture**:
 
 # 👨‍💻 Developer
 
-***PRAVEENKUMAR R***Email : praveen72696@gmail.com 
+**PRAVEENKUMAR R**
+* Email : praveen72696@gmail.com 
 
 ---
 
