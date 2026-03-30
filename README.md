@@ -1,4 +1,4 @@
-# 🏟️ SlotSphere
+# 🏟️ ampus Sports Booking System
 
 ### Campus Sports Booking System
 
