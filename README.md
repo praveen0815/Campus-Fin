@@ -1,7 +1,6 @@
 # 🏟️ Campus Sports Booking System
 
 Campus Sports Booking System is a modern, full-stack campus sports booking platform that digitizes facility reservations, eliminates scheduling conflicts, and provides real-time visibility into sports infrastructure usage.
-
 It empowers both **students** and **administrators** through a seamless, responsive, and scalable web application.
 
 ---
