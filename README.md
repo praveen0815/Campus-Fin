@@ -96,22 +96,23 @@ It empowers both **students** and **administrators** through a seamless, respons
 ## 🗄️ Data Layer
 <img width="865" height="373" alt="image" src="https://github.com/user-attachments/assets/1a8c8c42-2452-4d41-a1af-815f857556fd" />
 
-* Manages business logic and system operations
-* Handles authentication and role validation
-* Processes booking requests and validations
-* Provides APIs for frontend communication
-* Ensures secure data flow using JWT
+* Stores all system data in PostgreSQL
+* Maintains relational tables (users, slots, bookings)
+* Ensures data consistency and integrity
+* Uses foreign keys for relationships
+* Supports real-time updates via Supabase
+
 ---
 
 ## 🔄 System Flow
 
 <img width="1082" height="679" alt="image" src="https://github.com/user-attachments/assets/d55349f5-dd61-4c62-ba7d-a0e12c29c136" />
 
-* Illustrates internal system components
-* Shows interaction between modules (Auth, Booking, Notifications)
-* Highlights modular structure of application
-* Demonstrates separation of concerns
-* Improves system scalability and maintainability
+* Shows complete flow from user action to database
+* User interacts with frontend UI
+* Requests are sent to Supabase backend
+* Backend processes logic and updates database
+* Response is sent back and UI updates instantly
 
 ---
 
@@ -150,22 +151,22 @@ It empowers both **students** and **administrators** through a seamless, respons
 
 <img width="1074" height="524" alt="image" src="https://github.com/user-attachments/assets/b4ff0136-d6c8-4faf-b2dc-7ba1cd6d609e" />
 
-* Illustrates internal system components
-* Shows interaction between modules (Auth, Booking, Notifications)
-* Highlights modular structure of application
-* Demonstrates separation of concerns
-* Improves system scalability and maintainability
+* Displays database tables and structure
+* Shows columns like id, role, slot, status
+* Represents how data is stored in PostgreSQL
+* Helps in understanding system data model
+* Ensures normalized database design
   
 ---
 
 ## Relationships
 <img width="982" height="503" alt="image" src="https://github.com/user-attachments/assets/c2f702b6-bb22-4b01-b76e-e2158b3bd484" />
 
-* Displays database tables and structure
-* Shows columns like id, role, slot, status
-* Represents how data is stored in PostgreSQL
-* Helps in understanding system data model
-* Ensures normalized database design
+* Shows relationships between entities
+* One-to-many mapping (User → Bookings, Venue → Slots)
+* Defines how tables are connected
+* Ensures referential integrity
+* Prevents data inconsistency
 
 ---
 
