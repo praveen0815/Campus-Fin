@@ -106,7 +106,7 @@ It empowers both **students** and **administrators** through a seamless, respons
 
 ## 🔄 System Flow
 
-<img width="1115" height="546" alt="image" src="https://github.com/user-attachments/assets/1a9622f9-4b84-4dfe-b53a-8f309e05b476" />
+<img width="1082" height="679" alt="image" src="https://github.com/user-attachments/assets/d55349f5-dd61-4c62-ba7d-a0e12c29c136" />
 
 * Illustrates internal system components
 * Shows interaction between modules (Auth, Booking, Notifications)
